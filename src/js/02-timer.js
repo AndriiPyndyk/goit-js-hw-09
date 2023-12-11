@@ -7,7 +7,8 @@ const hoursRef = document.querySelector('[data-hours]');
 const minutesRef = document.querySelector('[data-minutes]');
 const secondsRef = document.querySelector('[data-seconds]');
 const startBtn = document.querySelector('[data-start]');
-const inputDate = document.querySelector('#datetime-picker');
+
+let selectedDate;
 
 // ------------------------------------------------
 
@@ -17,7 +18,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
+    selectedDate = selectedDates[0];
 
     if (selectedDate < new Date()) {
       Notify.failure('Будь ласка виберіть дату в майбутньому');
@@ -28,17 +29,16 @@ const options = {
   },
 };
 
-flatpickr('input#datetime-picker', options);
+const flatpickrInstance = flatpickr('input#datetime-picker', options);
 
 // ----------------------------------------------
 
 startBtn.addEventListener('click', onStartClick);
 
 function onStartClick() {
-  const selectedDate = flatpickr.parseDate(inputDate.value);
-
   if (selectedDate) {
     startTimer(selectedDate);
+    startBtn.disabled = true;
   } else {
     Notify.failure('Вибрана недійcна дата');
   }
